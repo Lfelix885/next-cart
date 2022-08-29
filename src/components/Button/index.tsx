@@ -2,17 +2,16 @@ import { StyledButton } from "./styles";
 
 interface StyledButtonProps{
     title?:string;
-    cb?: () => void;
+    onClick?: (event?:any) => ({});
     types: 'cancel' | 'submit' | 'button' | 'tableButton';
     className?:string;
     children?:JSX.Element;
 }
 
 
-function Button({title,cb, types, className, children}:StyledButtonProps){
+export function Button({title,onClick, types, className, children}:StyledButtonProps){
     return(
-        <StyledButton onClick={() => cb} className={className} typeOfButton={types}>{title || children}</StyledButton>
+        <StyledButton onClick={onClick} className={className} typeOfButton={types}>{title || children}</StyledButton>
     )
 }
 
-export default Button;

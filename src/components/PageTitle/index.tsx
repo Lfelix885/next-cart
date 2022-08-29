@@ -1,6 +1,6 @@
 import { Subtitle, Title, TitleContainer } from "./styles";
 
-function PageTitle({ title, subtitle }: any) {
+export function PageTitle({ title, subtitle }: any) {
   return (
     <>
       <TitleContainer>
@@ -9,5 +9,3 @@ function PageTitle({ title, subtitle }: any) {
     </>
   );
 }
-
-export default PageTitle;

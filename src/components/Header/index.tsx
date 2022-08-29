@@ -2,7 +2,7 @@ import { HeaderContainer } from "./styles";
 import Image from "next/image";
 import LogoImage from "../../assets/img/Logotipo_NextCart.svg";
 
-function Header() {
+export function Header() {
   return (
     <>
       <HeaderContainer>
@@ -12,4 +12,3 @@ function Header() {
   );
 }
 
-export default Header;
