@@ -3,12 +3,12 @@ import styled from "styled-components";
 export const TableContainer = styled.div`
     background-color:white;
     color:black;
-    border-bottom: 1px solid #D9D9D9;
     border-radius:5px
 `;
 
 export const TableContent = styled.div`
     margin:10px;
+    border-bottom: 1px solid #D9D9D9;
 `;
 
 export const ProfileImage = styled.div`

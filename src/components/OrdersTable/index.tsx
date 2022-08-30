@@ -12,7 +12,7 @@ function getRandomProfileImage(items: [string]) {
   return items[Math.floor(Math.random() * items.length)];
 }
 
-interface Bla {
+export interface Bla {
   id: number;
   numProtocolo: string;
   dataEntrada: string;
