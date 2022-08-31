@@ -4,9 +4,16 @@ import {
   Title,
   Subtitle,
   TableContent,
+  ProfileImageContainer,
+  TextContainer,
+  ButtonEditContainer,
 } from "./styles";
 import { profilePics } from "../../utils/profilepics";
 import { Button } from "../Button";
+import { useEffect, useState } from "react";
+import { getData } from "../../services/apis";
+import { OrdersTableTooltip } from "./OrdersTableTooltip";
+import { toast } from "react-toastify";
 
 function getRandomProfileImage(items: [string]) {
   return items[Math.floor(Math.random() * items.length)];
@@ -21,27 +28,50 @@ export interface Bla {
   tipoProtocolo: string;
 }
 interface TableProps {
-  data: Bla[];
+  data?: any;
 }
 
-export function OrdersTable({ data }: TableProps) {
+export function OrdersTable({ data }: any) {
+  const [tableData, setTableData] = useState([]);
+  const [tooltipShown, setTooltipShown] = useState(false);
+
+  useEffect(() => {
+    getData().then((res: []) => setTableData(res)).catch((err)=> {
+      toast.error('Não foi possível carregar os dados', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    });
+  }, []);
+
   return (
     <>
-      <TableContainer>
-        {data.map((x) => {
+      <TableContainer className="mx-3">
+        {tableData?.map((x: any) => {
           return (
             <TableContent key={x.id} className="row">
-              <div className="col-sm-2 d-flex justify-content-start align-items-center">
-                <ProfileImage>
+              <ProfileImageContainer className="col-sm-2 d-flex justify-content-start align-items-center">
+                {tooltipShown && (
+                  <OrdersTableTooltip apresentante={x.apresentante} tipoProtocolo={x.tipoProtocolo} />
+                )}
+                <ProfileImage
+                  className="img"
+                  onMouseEnter={() => setTooltipShown(!tooltipShown)}
+                >
                   <img
                     height={45}
                     width={45}
                     src={getRandomProfileImage(profilePics)}
                   ></img>
                 </ProfileImage>
-              </div>
+              </ProfileImageContainer>
 
-              <div className="col align-items-center">
+              <TextContainer className="col align-items-center">
                 <Title className="row justify-content-center">
                   Número do Protocolo: {x.numProtocolo}
                 </Title>
@@ -51,13 +81,13 @@ export function OrdersTable({ data }: TableProps) {
                 <Subtitle className="row justify-content-center">
                   Data de Vencimento: {x.dataVencimento}
                 </Subtitle>
-              </div>
+              </TextContainer>
 
-              <div className="col-sm-2 d-flex justify-content-end">
-                <Button types={"tableButton"}>
+              <ButtonEditContainer className="col-sm-2">
+                <Button className="btn1" types={"tableButton"}>
                   <i className="bi bi-pencil-square"></i>
                 </Button>
-              </div>
+              </ButtonEditContainer>
             </TableContent>
           );
         })}

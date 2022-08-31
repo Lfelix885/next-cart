@@ -1,8 +1,10 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
+import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "../../styles/globals.css";
 import Head from "next/head";
 import { Header } from "../components/Header";
+import { ToastContainer } from "react-toastify";
 import type { AppProps } from "next/app";
 
 function NextCart({ Component, pageProps }: AppProps) {
@@ -13,6 +15,7 @@ function NextCart({ Component, pageProps }: AppProps) {
       </Head>
       <Header />
       <Component {...pageProps} />
+      <ToastContainer />  
     </>
   );
 }

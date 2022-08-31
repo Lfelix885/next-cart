@@ -12,6 +12,10 @@ export const TitleContainer = styled.div`
 export const Title = styled.p`
     font-size:2rem;
     font-weight:700;
+
+    @media(max-width: 800px) {
+        font-size:1.2rem;
+    }
 `
 
 export const Subtitle = styled.p`

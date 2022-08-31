@@ -1,9 +1,9 @@
 import { Button } from "../Button";
-import { FormLabel } from "./styles";
+import { ButtonFormContainer, FormLabel } from "./styles";
 import { useRouter } from "next/router";
-import { FormEventHandler, useState } from "react";
-import { Bla } from "../OrdersTable";
 import { useForm } from "react-hook-form";
+import { sendData } from "../../services/apis";
+import { toast } from "react-toastify";
 
 interface RegisterFormProps {
   pathForCancelBtn: string;
@@ -17,11 +17,41 @@ type FormProp = {
   tipoProtocolo: string;
 };
 
-
 export const RegisterForm = ({ pathForCancelBtn }: RegisterFormProps) => {
-  const { register, handleSubmit } = useForm<FormProp>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormProp>();
   const router = useRouter();
-  const submitForm = (formData: FormProp) => console.log('form',formData)
+
+  const submitForm = (formData: FormProp) => {
+    return sendData(formData)
+      .then((res) => {
+        reset(formData);
+        toast.success("Dados cadastrados com sucesso!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      })
+      .catch((err) => {
+        toast.error("Não foi possível carregar os dados", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+  };
 
   return (
     <>
@@ -29,7 +59,7 @@ export const RegisterForm = ({ pathForCancelBtn }: RegisterFormProps) => {
         <div>
           <FormLabel className="form-label mb-0">Protocolo</FormLabel>
           <input
-            {...register("numProtocolo")}
+            {...register("numProtocolo", { required: "O campo é obrigatório" })}
             type="text"
             className="form-control mb-3"
             id="numProtocolo"
@@ -41,7 +71,9 @@ export const RegisterForm = ({ pathForCancelBtn }: RegisterFormProps) => {
           <div className="col">
             <FormLabel className="form-label mb-0">Data de Entrada</FormLabel>
             <input
-              {...register("dataEntrada")}
+              {...register("dataEntrada", {
+                required: "O campo é obrigatório",
+              })}
               type="date"
               className="form-control mb-3"
               id="dataEntrada"
@@ -51,7 +83,9 @@ export const RegisterForm = ({ pathForCancelBtn }: RegisterFormProps) => {
           <div className="col">
             <FormLabel className="form-label mb-0">Data de Saída</FormLabel>
             <input
-              {...register("dataVencimento")}
+              {...register("dataVencimento", {
+                required: "O campo é obrigatório",
+              })}
               type="date"
               className="form-control mb-3"
               id="dataVencimento"
@@ -63,7 +97,7 @@ export const RegisterForm = ({ pathForCancelBtn }: RegisterFormProps) => {
         <div>
           <FormLabel className="form-label mb-0">Apresentante</FormLabel>
           <input
-            {...register("apresentante")}
+            {...register("apresentante", { required: "O campo é obrigatório" })}
             type="text"
             className="form-control mb-3"
             id="apresentante"
@@ -74,7 +108,9 @@ export const RegisterForm = ({ pathForCancelBtn }: RegisterFormProps) => {
         <div>
           <FormLabel className="form-label mb-0">Tipo do Protocolo</FormLabel>
           <input
-            {...register("tipoProtocolo")}
+            {...register("tipoProtocolo", {
+              required: "O campo é obrigatório",
+            })}
             type="text"
             className="form-control mb-3"
             id="tipoProtocolo"
@@ -82,19 +118,19 @@ export const RegisterForm = ({ pathForCancelBtn }: RegisterFormProps) => {
           />
         </div>
 
-        <div className="me-3 d-flex justify-content-end">
+        <ButtonFormContainer className="d-flex justify-content-end">
           <Button
             onClick={(e) => {
               e.preventDefault();
               return router.push(pathForCancelBtn);
             }}
-            className="me-3"
+            className="btn1 me-3"
             types="cancel"
             title="Cancelar"
           />
 
           <Button types="submit" title="Enviar" />
-        </div>
+        </ButtonFormContainer>
       </form>
     </>
   );
